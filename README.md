@@ -20,7 +20,7 @@
 1. Klonuj repozytorium:
     ```sh
     git clone https://github.com/iajwsfi0ahfihasfhfa/securityheaders.git
-    cd securityheaders-scanner
+    cd securityheaders
     ```
 
 2. Zainstaluj zależności:
