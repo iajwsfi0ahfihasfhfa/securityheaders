@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SecurityHeaders Scanner</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; }
+        .container { max-width: 600px; margin: 3em auto; background: #fff; border-radius: 6px; padding: 2em; box-shadow: 0 2px 8px rgba(0,0,0,0.08);}
+        h1 { text-align: center; margin-bottom: 1.5em;}
+        #results { margin-top: 2em; }
+        .header-row { display: flex; justify-content: space-between; padding: 0.5em 0; border-bottom: 1px solid #eee;}
+        .header-row strong { width: 60%; }
+        .missing { color: #b00; }
+        .present { color: #090; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SecurityHeaders Scanner</h1>
+        <form id="scan-form">
+            <input type="text" id="url-input" required placeholder="https://example.com" style="width:80%; padding:0.5em;">
+            <button type="submit" style="padding:0.5em 1em;">Scan</button>
+        </form>
+        <div id="results"></div>
+    </div>
+    <script>
+        document.getElementById('scan-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const url = document.getElementById('url-input').value;
+            document.getElementById('results').innerHTML = 'Scanning...';
+            const res = await fetch('/api/scan', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({url: url})
+            });
+            const data = await res.json();
+            if (data.error) {
+                document.getElementById('results').innerHTML = '<span style="color:#b00;">' + data.error + '</span>';
+                return;
+            }
+            let html = '<div><strong>Header</strong><span>Status</span></div>';
+            for (const [key, value] of Object.entries(data.headers)) {
+                html += `<div class="header-row">
+                            <strong>${key}</strong>
+                            <span class="${value ? 'present' : 'missing'}">
+                                ${value ? 'Present' : 'Missing'}
+                            </span>
+                        </div>`;
+            }
+            document.getElementById('results').innerHTML = html;
+        });
+    </script>
+</body>
+</html>
