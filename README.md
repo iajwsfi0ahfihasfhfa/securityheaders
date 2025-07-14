@@ -19,7 +19,7 @@
 
 1. Klonuj repozytorium:
     ```sh
-    git clone https://github.com/yourorg/securityheaders-scanner.git
+    git clone https://github.com/iajwsfi0ahfihasfhfa/securityheaders.git
     cd securityheaders-scanner
     ```
 
